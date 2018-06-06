@@ -1,11 +1,6 @@
 #! /bin/sh
 
 cd ~/
-git clone https://github.com/L-Zephyr/Drafter.git
-cd Drafter
-swift build -c release -Xswiftc -static-stdlib
-cp -f -r ./Template/ ~/.drafter
-cd .build/release
-cp -f drafter /usr/local/bin/drafter
-cd ~/
-rm -rf Drafter
+curl -o ./RxTemplate.zip https://raw.githubusercontent.com/L-Zephyr/static_resource/master/RxTemplate/Rx%20View%20Model.xctemplate.zip
+unzip -o RxTemplate.zip -d ~/Library/Developer/Xcode/Templates/File\ Templates
+rm RxTemplate.zip
