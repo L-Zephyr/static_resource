@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const path = require('path')
 const fs = require('fs')
 const process = require('process')
@@ -19,15 +21,22 @@ spec根目录中必须有一个 .config.json 文件：
 1. 读取podspec文件中的版本号，并打上tag
 2. 在Repos的本地仓库中创建一个相应版本的文件夹，并将该sepc拷贝到里面
 3. 提交Repos到远程仓库
+
+使用chmod 755 xxx为该文件提供执行权限
 */
+
+// 将当前文件夹路径设置为工作路径
+process.chdir(__dirname)
 
 // 读取本地的配置文件
 function readConfigFile() {
-    let path = './.config.json'
-    if (!fs.existsSync(path)) {
+    let configPath = path.resolve('./.config.json')
+    if (!fs.existsSync(configPath)) {
         throw "配置文件.config.json不存在"
     }
-    let data = fs.readFileSync(path, { encoding: 'utf-8' })
+    let data = fs.readFileSync(configPath, {
+        encoding: 'utf-8'
+    })
     return JSON.parse(data)
 }
 
@@ -52,7 +61,9 @@ function getSpecFile(dir) {
 
 /// 从一个spec文件中读取项目名称和版本信息: { name: xxx, version: xxx }
 function getProjectInfo(podspec) {
-    let content = fs.readFileSync(podspec, { encoding: 'utf-8' })
+    let content = fs.readFileSync(podspec, {
+        encoding: 'utf-8'
+    })
     let infos = [
         new RegExp("(?<=(s.name\\s*=\\s*'))\\w*(?=')"), // 匹配项目名
         new RegExp("(?<=(s.version\\s*=\\s*')).*(?=')") // 匹配版本号
@@ -68,7 +79,7 @@ function getProjectInfo(podspec) {
         return null
     }
 
-    return { 
+    return {
         name: infos[0],
         version: infos[1]
     }
@@ -93,13 +104,6 @@ function enumerateDir(dir, callback, recursive = false) {
 }
 
 // ------------------------------
-
-// // 解析命令行参数
-// commander
-//     .version('0.1.0', '-v, --version')
-//     .option('-t, --tag <n>', 'Set a new tag for current spec', (val) => String(val))
-//     .option('-m, --message <n>', 'The message you commit the spec', (val) => String(val))
-//     .parse(process.argv)
 
 // 从./.config.json中读取配置文件
 try {
@@ -164,7 +168,15 @@ fs.copyFileSync(currentSpec, path.join(targetPath, projectInfo.name + '.podspec'
 
 // ----- 3. 将Repos提交上去
 let cwd = Config.localRepoPath
-exec("git pull", { cwd: cwd })
-exec("git add .", { cwd: cwd })
-exec(`git commit -a -m "${projectInfo.name} ${projectInfo.version}"`, { cwd: cwd })
-exec("git push", { cwd: cwd })
+exec("git pull", {
+    cwd: cwd
+})
+exec("git add .", {
+    cwd: cwd
+})
+exec(`git commit -a -m "${projectInfo.name} ${projectInfo.version}"`, {
+    cwd: cwd
+})
+exec("git push", {
+    cwd: cwd
+})
