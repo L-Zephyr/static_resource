@@ -1,17 +1,24 @@
 const path = require('path')
 const fs = require('fs')
 const process = require('process')
-const commander = require('commander')
+const exec = require('child_process').execSync
 
 const LocalProjectPath = ''
 const LocalRepoPath = ''
 
 /*
-1. 指定一个版本号和commit信息， 使用方式: SpecUpdater -v 1.0.0 -m "commit message"
+功能：
+根据podspec中的版本号自动打上tag，在Repos中创建相应版本的文件夹将podspec拷贝过去并提交
+spec根目录中必须有一个 .config.json 文件：
+{
+    "localRepoPath": "xxx" // 本地Repos仓库的位置
+}
+并将.config.json添加到.gitignore中
 
-2. 提交当前仓库的变更，并打上tag
-3. 在Repos的本地仓库中创建一个相应版本的文件夹，并将该sepc拷贝到里面
-4. 提交Repos到远程仓库
+执行步骤：
+1. 读取podspec文件中的版本号，并打上tag
+2. 在Repos的本地仓库中创建一个相应版本的文件夹，并将该sepc拷贝到里面
+3. 提交Repos到远程仓库
 */
 
 // 读取本地的配置文件
@@ -87,12 +94,12 @@ function enumerateDir(dir, callback, recursive = false) {
 
 // ------------------------------
 
-// 解析命令行参数
-commander
-    .version('0.1.0', '-v, --version')
-    .option('-t, --tag <n>', 'Set a new tag for current spec', (val) => String(val))
-    .option('-m, --message <n>', 'The message you commit the spec', (val) => String(val))
-    .parse(process.argv)
+// // 解析命令行参数
+// commander
+//     .version('0.1.0', '-v, --version')
+//     .option('-t, --tag <n>', 'Set a new tag for current spec', (val) => String(val))
+//     .option('-m, --message <n>', 'The message you commit the spec', (val) => String(val))
+//     .parse(process.argv)
 
 // 从./.config.json中读取配置文件
 try {
@@ -112,7 +119,7 @@ if (currentSpec == null) {
     process.exit()
 }
 
-let projectInfo = getProjectInfo(currentSpec) // 项目信息
+let projectInfo = getProjectInfo(currentSpec) // 项目信息 { name: xxx, version: xxx }
 let targetFolder = null // 目标文件夹
 if (projectInfo == null) {
     console.log('Project name and version not found')
@@ -143,5 +150,21 @@ if (fs.existsSync(targetPath)) {
     fs.mkdirSync(targetPath)
 }
 
-// 将podspec文件拷贝过去
+// ----- 1. local spec打上tag -----
+
+let stdout = exec('git tag ' + projectInfo.version)
+if (stdout.length != 0) {
+    console.log('Tag error!')
+    process.exit()
+}
+exec('git push origin ' + projectInfo.version)
+
+// ----- 2. 将podspec文件拷贝到本地的Repos文件夹中（创建相应版本的文件夹）
 fs.copyFileSync(currentSpec, path.join(targetPath, projectInfo.name + '.podspec')) // repos/prjectName/1.0.0/xxx.podspec
+
+// ----- 3. 将Repos提交上去
+let cwd = Config.localRepoPath
+exec("git pull", { cwd: cwd })
+exec("git add .", { cwd: cwd })
+exec(`git commit -a -m "${projectInfo.name} ${projectInfo.version}"`, { cwd: cwd })
+exec("git push", { cwd: cwd })
