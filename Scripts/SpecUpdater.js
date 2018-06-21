@@ -85,23 +85,23 @@ function getProjectInfo(podspec) {
     }
 }
 
-// 遍历文件夹
-function enumerateDir(dir, callback, recursive = false) {
-    if (!callback) {
-        return
-    }
-    let list = fs.readdirSync(dir)
-    for (let index in list) {
-        let filename = path.join(dir, list[index])
-        var stat = fs.statSync(filename)
+// // 遍历文件夹
+// function enumerateDir(dir, callback, recursive = false) {
+//     if (!callback) {
+//         return
+//     }
+//     let list = fs.readdirSync(dir)
+//     for (let index in list) {
+//         let filename = path.join(dir, list[index])
+//         var stat = fs.statSync(filename)
 
-        if (stat.isDirectory() && filename != ".git" && recursive == true) {
-            enumerateDir(filename, callback, recursive)
-        } else {
-            callback(filename)
-        }
-    }
-}
+//         if (stat.isDirectory() && filename != ".git" && recursive == true) {
+//             enumerateDir(filename, callback, recursive)
+//         } else {
+//             callback(filename)
+//         }
+//     }
+// }
 
 // ------------------------------
 
@@ -124,25 +124,15 @@ if (currentSpec == null) {
 }
 
 let projectInfo = getProjectInfo(currentSpec) // 项目信息 { name: xxx, version: xxx }
-let targetFolder = null // 目标文件夹
 if (projectInfo == null) {
     console.log('Project name and version not found')
     process.exit()
 }
 
-// 找到Repos中的目标文件夹
-let list = fs.readdirSync(Config.localRepoPath)
-for (let index in list) {
-    let filename = list[index]
-    let stat = fs.statSync(filename)
-    if (stat.isDirectory() && filename == projectInfo.name) {
-        targetFolder = path.join(Config.localRepoPath, filename)
-        break
-    }
-}
-if (targetFolder === null) {
-    console.log(projectInfo.name + ' not found in Repos ' + Config.localRepoPath)
-    process.exit()
+// repos中的目标文件夹
+let targetFolder = path.join(Config.localRepoPath, projectInfo.name) 
+if (!fs.existsSync(targetFolder)) {
+    fs.mkdirSync(targetFolder)
 }
 
 // 在Repos中创建当前版本对应的文件夹
