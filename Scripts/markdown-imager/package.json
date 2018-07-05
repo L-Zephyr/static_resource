@@ -1,0 +1,19 @@
+{
+  "name": "markdown-imager",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "markdown-imager": "index.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js /Users/lzephyr/Desktop/My-Notes/iOS笔记/开源项目阅读笔记/AFNetworking.md"
+  },
+  "author": "LZephyr",
+  "license": "ISC",
+  "dependencies": {
+    "md5": "^2.2.1",
+    "yargs": "^12.0.1"
+  }
+}
