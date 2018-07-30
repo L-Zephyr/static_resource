@@ -4,13 +4,22 @@ const exec = require('child_process').execSync
 const fs = require('fs-extra')
 const plist = require('plist')
 
+// 使用方式：$ ios-re-helper path [arch]
+// path - 可执行文件的位置； arch - 可选，可执行文件的架构，默认为32位的armv7
+
 if (process.argv.length < 3) {
     console.log('Please input executable file name')
     process.exit()
 }
 process.chdir(__dirname)
 
+console.log("啦啦啦 " + process.cwd())
+
 let execFile = process.argv[2]
+let arch = 'armv7'
+if (process.argv.length > 3) {
+    arch = process.argv[3]
+}
 
 function removeIfExist(path) {
     if (fs.existsSync(path)) {
@@ -22,7 +31,8 @@ function removeIfExist(path) {
 console.log('1. Running class-dump...')
 let headers = './Headers'
 removeIfExist(headers)
-exec(`class-dump --arch armv7 ${execFile} -A -H -o ${headers}`)
+fs.mkdir(headers)
+exec(`class-dump --arch ${arch} ${execFile} -A -H -o ${headers}`)
 
 // 2. 符号还原
 console.log('2. Running restore-symbol...')
