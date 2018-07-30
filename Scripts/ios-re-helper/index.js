@@ -11,15 +11,13 @@ if (process.argv.length < 3) {
     console.log('Please input executable file name')
     process.exit()
 }
-process.chdir(__dirname)
-
-console.log("啦啦啦 " + process.cwd())
 
 let execFile = process.argv[2]
 let arch = 'armv7'
 if (process.argv.length > 3) {
     arch = process.argv[3]
 }
+
 
 function removeIfExist(path) {
     if (fs.existsSync(path)) {
