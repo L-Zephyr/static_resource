@@ -2,10 +2,18 @@
   "name": "ios-re-helper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "bin": {
+    "ios-re-helper": "index.js"
+  },
+  "preferGlobal": true,
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "LZephyr",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^7.0.0",
+    "plist": "^3.0.1"
+  }
 }
