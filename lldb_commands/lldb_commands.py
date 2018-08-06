@@ -21,10 +21,19 @@ def traceclass(debugger, command, result, internal_dict):
 
   res = lldb.SBCommandReturnObject()
 
+  # get original breakpoint list
+  debugger.GetCommandInterpreter().HandleCommand("br list", res)
+  origBrList = res.GetOutput()
+
   # set breakpoint
   debugger.GetCommandInterpreter().HandleCommand("br set -r \[" + command + " .*\]", res)
+
   # get the breakpoint list
   debugger.GetCommandInterpreter().HandleCommand("br list", res) 
+  if origBrList == res.GetOutput(): # nothing change means failure
+    print("Error: fail to set breakpoint!")
+    return
+
   # get the number of br we just set
   breakpoint = re.compile(r"^\d+", re.M).findall(res.GetOutput()).pop()
     
