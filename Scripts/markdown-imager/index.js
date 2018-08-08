@@ -39,6 +39,10 @@ if (!fs.existsSync(targetFolder)) {
 
 // 获得原始的图片名和转换后的图片名
 let localImages = fileContent.match(imagesReg)
+if (!localImages) {
+    console.log("No image found!")
+    process.exit()
+}
 let remoteImages = localImages.map(image => {
     if (image.startsWith('http://') || image.startsWith('https://') || !fs.existsSync(image)) {
         return image
