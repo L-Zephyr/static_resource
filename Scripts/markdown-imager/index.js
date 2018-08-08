@@ -12,9 +12,9 @@ const RemoteBaseUrl = 'https://raw.githubusercontent.com/L-Zephyr/static_resourc
 
 // 处理一个markdown文件
 function processMarkdown(markdownPath) {
+    console.log("--------------------------------------------")
     console.log("Process markdown file: " + markdownPath + ":")
-    // markdown文件路径
-    // let markdownPath = process.argv[2]
+
     let markdownBaseName = path.basename(markdownPath).split('.')[0]
     if (!fs.existsSync(markdownPath)) {
         console.log(markdownPath + ' not exists!')
@@ -90,7 +90,6 @@ function processMarkdown(markdownPath) {
     } catch (error) {
         console.log(error)
     }
-    console.log("\n")
 }
 
 // 获取参数
@@ -102,7 +101,6 @@ if (process.argv.length < 3) {
 let filePath = process.argv[2]
 if (fs.statSync(filePath).isDirectory()) { // 如果是一个文件夹则查找所有markdown文件
     for (let file of fs.readdirSync(filePath)) {
-        // console.log(file + "  " + path.extname(file))
         if (path.extname(file) == ".md") {
             processMarkdown(path.resolve(filePath, file))
         }
