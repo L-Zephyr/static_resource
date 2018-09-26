@@ -1,0 +1,19 @@
+{
+  "name": "genereate_import_headers",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "genereate_import_headers": "index.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js /Users/lzephyr/Desktop/NECFoundation/NECFoundation/Classes/NECService"
+  },
+  "author": "LZephyr",
+  "license": "ISC",
+  "dependencies": {
+    "date-format-lite": "^17.7.0",
+    "recursive-readdir": "^2.2.2"
+  }
+}
