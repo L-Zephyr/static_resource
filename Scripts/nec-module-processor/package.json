@@ -1,0 +1,19 @@
+{
+  "name": "nec-module-processor",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "nec-module-processor": "index.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js /Users/lzephyr/Desktop/work/NECatoonReader/NECatoonReader"
+  },
+  "author": "LZephyr",
+  "license": "ISC",
+  "dependencies": {
+    "recursive-readdir": "^2.2.2",
+    "xml2js": "^0.4.19"
+  }
+}
