@@ -1,5 +1,9 @@
 #! /usr/bin/env node
 
+/*
+处理工程中的所有xib文件，匹配指定的类型并替换它的Module
+*/
+
 const process = require('process')
 const fs = require('fs')
 const readdir = require('recursive-readdir')

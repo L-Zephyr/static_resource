@@ -1,0 +1,14 @@
+{
+  "name": "remove-header-ref",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js /Users/lzephyr/Desktop/work/Comics/NECatoonReader/NECatoonReader /Users/lzephyr/Desktop/work/Comics/NECFoundation/NECFoundation/Classes"
+  },
+  "author": "LZephyr",
+  "license": "ISC",
+  "dependencies": {
+    "recursive-readdir": "^2.2.2"
+  }
+}

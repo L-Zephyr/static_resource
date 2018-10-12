@@ -1,5 +1,9 @@
 #! /usr/bin/env node
 
+/*
+找到指定路径下的所有头文件，生成一个包含所有头文件import的头文件
+*/
+
 const process = require('process')
 const fs = require('fs')
 const readdir = require('recursive-readdir')

@@ -4,6 +4,10 @@ const process = require('process')
 const cheerio = require('cheerio')
 const tableParser = require('cheerio-tableparser')
 
+/*
+爬取官方文档上关于OC到Swift类型命名的映射关系
+*/
+
 // 数组去重
 Object.defineProperty(Array.prototype, 'unique', {
     value: function () {

@@ -6,6 +6,10 @@ const md5 = require('md5')
 const path = require('path')
 const exec = require('child_process').execSync
 
+/*
+自动将指定目录下的markdown文件中的所有本地图片上传到github中，并将markdown中的本地路径替换成远程的url
+*/
+
 const LocalRepository = '/Users/lzephyr/Desktop/code/github/static_resource/' // 本地仓库的位置
 const ImagesFoler = 'Resources' // 仓库中存放资源的文件夹
 const RemoteBaseUrl = 'https://raw.githubusercontent.com/L-Zephyr/static_resource/master/' // 远程仓库的URL
