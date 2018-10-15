@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js /Users/lzephyr/Desktop/work/Comics/NECatoonReader/NECatoonReader /Users/lzephyr/Desktop/work/Comics/NECFoundation/NECFoundation/Classes"
+    "test": "node index.js /Users/lzephyr/Desktop/work/Comics/NECatoonReader/NECatoonReader /Users/lzephyr/Desktop/work/Comics/NECZip/NECZip"
   },
   "author": "LZephyr",
   "license": "ISC",
