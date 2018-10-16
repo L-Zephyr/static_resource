@@ -3,7 +3,7 @@
 cd ~/
 mkdir ./.drafter_tmp
 cd ./drafter_tmp
-curl https://raw.githubusercontent.com/L-Zephyr/static_resource/master/Drafter/Drafter.zip -o ./drafter.zip
+curl "https://raw.githubusercontent.com/L-Zephyr/static_resource/master/Drafter/Drafter.zip" -o ./drafter.zip
 unzip drafter.zip
 cp -f -r ./drafter/Template/ ~/.drafter
 cp -f ./drafter/drafter /usr/local/bin/drafter
