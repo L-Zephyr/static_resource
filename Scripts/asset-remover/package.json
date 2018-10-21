@@ -1,0 +1,18 @@
+{
+  "name": "asset-remover",
+  "version": "1.0.0",
+  "description": "组件化后组件中引用的图片资源还在主工程的Asset中，该脚本自动匹配组件引用的图片，并将其对应的文件从主工程的Asset移动到组件的Asset中，需要注意的是该脚本仅匹配直接以图片名字符串引用的图片",
+  "bin": {
+    "asset-remover": "index.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "LZephyr",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "recursive-readdir": "^2.2.2"
+  }
+}
