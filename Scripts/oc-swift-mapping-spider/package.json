@@ -1,7 +1,7 @@
 {
   "name": "oc-swift-mapping-spider",
   "version": "1.0.0",
-  "description": "crawl and generate oc to swift type mapping from apple document",
+  "description": "爬取官方文档上关于OC到Swift类型命名的映射关系",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

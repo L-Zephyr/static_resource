@@ -1,7 +1,7 @@
 {
   "name": "nec-module-processor",
   "version": "1.0.0",
-  "description": "",
+  "description": "处理工程中的所有xib文件，匹配指定的类型并替换它的Module",
   "bin": {
     "nec-module-processor": "index.js"
   },

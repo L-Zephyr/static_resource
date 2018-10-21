@@ -1,7 +1,7 @@
 {
-  "name": "remove-header-ref",
+  "name": "remove-header-import",
   "version": "1.0.0",
-  "description": "",
+  "description": "输入两个参数 sourcePath 和 excludePath，去掉 sourcePath 中所有源文件对 excludePath 目录中头文件的import",
   "main": "index.js",
   "scripts": {
     "test": "node index.js /Users/lzephyr/Desktop/work/Comics/NECatoonReader/NECatoonReader /Users/lzephyr/Desktop/work/Comics/NECZip/NECZip"

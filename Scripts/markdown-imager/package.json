@@ -1,7 +1,7 @@
 {
   "name": "markdown-imager",
   "version": "1.0.0",
-  "description": "",
+  "description": "自动将指定目录下的markdown文件中的所有本地图片上传到github中，并将markdown中的本地路径替换成远程的url",
   "bin": {
     "markdown-imager": "index.js"
   },

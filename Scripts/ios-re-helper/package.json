@@ -1,7 +1,7 @@
 {
   "name": "ios-re-helper",
   "version": "1.0.0",
-  "description": "",
+  "description": "对一个可执行文件进行class-dump、符号还原、添加调试权限、重签名等操作",
   "bin": {
     "ios-re-helper": "index.js"
   },

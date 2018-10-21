@@ -1,7 +1,7 @@
 {
   "name": "genereate_import_headers",
   "version": "1.0.0",
-  "description": "",
+  "description": "找到指定路径下的所有头文件，生成一个包含所有头文件import的头文件",
   "bin": {
     "genereate_import_headers": "index.js"
   },
