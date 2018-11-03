@@ -10,8 +10,12 @@
             "name": "启动程序",
             "program": "${workspaceFolder}/index.js",
             "args": [
-                "-p",
-                "/Users/lzephyr/Desktop/work/Comics/NECLoginModule/NECLoginModule"
+                "--path",
+                "/Users/lzephyr/Desktop/work/Comics/NECLoginModule/NECLoginModule/Classes",
+                "--swift-bundle",
+                "LoginBundle",
+                "--oc-bundle",
+                "LoginBundle"
             ]
         }
     ]

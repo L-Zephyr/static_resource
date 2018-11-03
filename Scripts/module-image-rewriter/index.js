@@ -6,54 +6,44 @@ const command = require('commander')
 const path = require('path')
 
 command
-    .option("-p --path [value]", '工程路径')
-    .option("-b --bundle [value]", 'Bundle的名称')
+    .option("-p, --path [value]", '工程路径')
+    .option("-b, --bundle [value]", 'Bundle的名称')
+    .option("-s, --swift-bundle [value", "Swift代码Bundle的名称")
+    .option("-o, --oc-bundle [value]", "oc代码中Bundle的名称")
     .parse(process.argv)
 
-// 工程路径
-let inputPath = command.path
-if (!inputPath) {
-    // process.exit()
-}
+function rewriteOCFile(file, bundle) {
+    let findImageReg = /(?<=\[UIImage ).*(?=imageNamed)/g // 找到 [UIImage imageNamed] 这样的语句，加上 ne_ 前缀
+    let addBundleReg = /(?<=\[UIImage ne_imageNamed.*[\]"])(?=\])/g // 为 [UIImage ne_ImageNamed..] 后面加上Bundle
 
-function rewriteOCFile(file) {
-    let reg = /(?<=\[UIImage imageNamed:.*["\]])(?=\])/g
     let content = fs.readFileSync(file, { encoding: 'utf-8' })
+    content = content.replace(findImageReg, "ne_")
+    content = content.replace(addBundleReg, ` bundleName:${bundle}`)
+
+    fs.writeFileSync(file, content, { encoding: "utf-8" })
 }
 
-function rewriteSwiftFile(file) {
-    let swiftReg = /UIImage\(named:.*\)/g
+function rewriteSwiftFile(file, bundle) {
+    let findImageReg = /(?<=UIImage)\(named:\s*/g // 找到 UIImage(named 这样的语句，替换成 UIImage.ne_imageNamed(
+    let addBundleReg = /(?<=UIImage\.ne_imageNamed.*[\)"])(?=\))/g // 加上Bundle
 
+    let content = fs.readFileSync(file, { encoding: 'utf-8' })
+    content = content.replace(findImageReg, ".ne_imageNamed(")
+    content = content.replace(addBundleReg, `, bundleName:${bundle}`)
+
+    fs.writeFileSync(file, content, { encoding: 'utf-8' })
 }
 
-function run(path) {
+function run(path, bundle, swiftBundle, ocBundle) {
     readdir(path, function(err, files) {
-        files.map(file => {
-            if (file.endsWith('.m')) {
-                rewriteOCFile(file)
+        for (let file of files) {
+            if (file.endsWith('.m') || file.endsWith('.mm')) {
+                rewriteOCFile(file, ocBundle ? ocBundle : bundle)
             } else if (file.endsWith('.swift')) {
-                rewriteSwiftFile(file)
+                rewriteSwiftFile(file, swiftBundle ? swiftBundle : bundle)
             }
-        })
+        }
     })
 }
 
-/**
- * 递归遍历所有文件和文件夹
- * @param {string} filePath 文件路径
- * @param {} callback 回调，file：当前文件，isDir：是否为文件夹
- */
-function recursiveReadSync(filePath, callback) {
-    let files = fs.readdirSync(filePath)
-    for (let file of files) {
-        let fullPath = path.join(filePath, file)
-        if (fs.statSync(fullPath).isDirectory()) {
-            callback(fullPath, true)
-            recursiveReadSync(fullPath, callback)
-        } else {
-            callback(fullPath, false)
-        }
-    }
-}
-
-run(inputPath)
+run(command.path, command.bundle, command.swiftBundle, command.ocBundle)
