@@ -49,6 +49,7 @@ function run(mainPath, modulePath, assetPath) {
     readdir(modulePath, function (err, files) {
         let ocReg = /(?<=\[UIImage imageNamed:\s*@").*(?="\])/g
         let swiftReg = /(?<=UIImage\(named:\s*").*(?="\))/g
+        let xibReg = /(?<=image name=").*?(?=")/g
 
         for (let file of files) {
             let reg
@@ -56,12 +57,14 @@ function run(mainPath, modulePath, assetPath) {
                 reg = ocReg
             } else if (file.endsWith('.swift')) { // Swift文件
                 reg = swiftReg
+            } else if (file.endsWith(".xib") || file.endsWith(".storyboard")) {
+                reg = xibReg
             } else {
                 continue
             }
 
             let content = fs.readFileSync(file, { encoding: 'utf-8' })
-            let names = content.match(reg)
+            let names = content.match(reg) // 引用的资源名称
             if (!names) {
                 continue
             }

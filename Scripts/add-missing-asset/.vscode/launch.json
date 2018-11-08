@@ -13,9 +13,9 @@
                 "--main-path",
                 "/Users/lzephyr/Desktop/work/Comics/NECatoonReader/NECatoonReader",
                 "--module-path",
-                "/Users/lzephyr/Desktop/work/Comics/NECFoundation/NECFoundation",
+                "/Users/lzephyr/Desktop/work/Comics/NECWebViewModule/NECWebViewModule/Classes",
                 "--module-asset",
-                "/Users/lzephyr/Desktop/work/Comics/NECFoundation/NECFoundation/Assets/Resources.xcassets"
+                "/Users/lzephyr/Desktop/work/Comics/NECWebViewModule/NECWebViewModule/Assets/WebView.xcassets"
             ]
         }
     ]

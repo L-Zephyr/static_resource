@@ -13,23 +13,19 @@ command
     .parse(process.argv)
 
 function rewriteOCFile(file, bundle) {
-    let findImageReg = /(?<=\[UIImage ).*(?=imageNamed)/g // 找到 [UIImage imageNamed] 这样的语句，加上 ne_ 前缀
-    let addBundleReg = /(?<=\[UIImage ne_imageNamed.*[\]"])(?=\])/g // 为 [UIImage ne_ImageNamed..] 后面加上Bundle
+    let findImageReg = /\[UIImage +imageNamed: *(.*?)\]/g; // 找到 [UIImage imageNamed:]
 
     let content = fs.readFileSync(file, { encoding: 'utf-8' })
-    content = content.replace(findImageReg, "ne_")
-    content = content.replace(addBundleReg, ` bundleName:${bundle}`)
+    content = content.replace(findImageReg, `[UIImage ne_imageNamed:$1 bundleName:${bundle}]`);
 
     fs.writeFileSync(file, content, { encoding: "utf-8" })
 }
 
 function rewriteSwiftFile(file, bundle) {
-    let findImageReg = /(?<=UIImage)\(named:\s*/g // 找到 UIImage(named 这样的语句，替换成 UIImage.ne_imageNamed(
-    let addBundleReg = /(?<=UIImage\.ne_imageNamed.*[\)"])(?=\))/g // 加上Bundle
+    let findImageReg = /UIImage\(named: *(.*?)\)/g // 找到 UIImage(named:xx)
 
     let content = fs.readFileSync(file, { encoding: 'utf-8' })
-    content = content.replace(findImageReg, ".ne_imageNamed(")
-    content = content.replace(addBundleReg, `, bundleName:${bundle}`)
+    content = content.replace(findImageReg, `UIImage.ne_imageNamed($1, bundleName: ${bundle})`)
 
     fs.writeFileSync(file, content, { encoding: 'utf-8' })
 }

@@ -11,11 +11,11 @@
             "program": "${workspaceFolder}/index.js",
             "args": [
                 "--path",
-                "/Users/lzephyr/Desktop/work/Comics/NECLoginModule/NECLoginModule/Classes",
+                "/Users/lzephyr/Desktop/work/Comics/NECWebViewModule/NECWebViewModule/Classes",
                 "--swift-bundle",
-                "LoginBundle",
+                "WebViewBundle",
                 "--oc-bundle",
-                "LoginBundle"
+                "WebViewBundle"
             ]
         }
     ]
