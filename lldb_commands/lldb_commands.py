@@ -7,7 +7,7 @@ def __lldb_init_module(debugger, internal_dict):
   debugger.HandleCommand('command script add -f lldb_commands.traceclass traceclass')
 
 # ------------------
-# 1. [traceclass]: Print all method calls in the specified class.
+# 1. [traceclass]: Print all method calls in the specified class. First arg is the name of class, second is the address of a specify instance
 # ------------------
 
 def traceclass_action(frame, location, dict):
@@ -26,7 +26,14 @@ def traceclass(debugger, command, result, internal_dict):
   origBrList = res.GetOutput()
 
   # set breakpoint
-  debugger.GetCommandInterpreter().HandleCommand("br set -r \[" + command + " .*\]", res)
+  args = command.split(' ')
+  print(args)
+  if len(args) == 0:
+    return
+  elif len(args) == 1:
+    debugger.GetCommandInterpreter().HandleCommand("br set -r \[" + command + " .*\]", res)
+  else:
+    debugger.GetCommandInterpreter().HandleCommand("br set -r \[" + command + " .*\] " + "-c '$arg1==" + args[1] + "'", res)
 
   # get the breakpoint list
   debugger.GetCommandInterpreter().HandleCommand("br list", res) 

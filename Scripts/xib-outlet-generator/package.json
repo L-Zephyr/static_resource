@@ -1,0 +1,16 @@
+{
+  "name": "xib-outlet-generator",
+  "version": "1.0.0",
+  "description": "自动生成XIB中所有outlet属性的代码",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "commander": "^2.19.0",
+    "xml2js": "^0.4.19"
+  }
+}
