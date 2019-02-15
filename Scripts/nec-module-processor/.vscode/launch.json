@@ -10,7 +10,7 @@
             "request": "launch",
             "name": "启动程序",
             "program": "${workspaceFolder}/index.js",
-            "args": ["/Users/lzephyr/Desktop/work/Comics/NECFoundation/NECFoundation/Classes"]
+            "args": ["/Users/lzephyr/Desktop/work/Comics/NECatoonReader"]
         }
     ]
 }

@@ -62,7 +62,7 @@ readdir(path, function (err, files) {
                 let cls = obj.$["customClass"]
                 if (cls && targets.indexOf(cls) != -1) {
                     found = true
-                    obj.$["customModule"] = "NECFoundation" // 替换模块
+                    obj.$["customModule"] = "NECatoonReader" // 替换模块
                     delete obj.$["customModuleProvider"] // 删除inherit from target
                 }
             })
