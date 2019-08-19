@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "./output/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "allowJs": true,
+        "target": "es6",
+        "module": "commonjs"
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+    ]
+}

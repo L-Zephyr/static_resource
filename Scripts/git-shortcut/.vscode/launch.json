@@ -1,0 +1,25 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "启动程序",
+            // 1. 执行ts-node命令
+            "program": "${workspaceRoot}/node_modules/.bin/ts-node",
+            "args": [
+                // 2. 这个是需要调试的ts代码文件
+                "./src/index.ts",
+                "cherry-pick",
+                "test"
+            ],
+            // 3. 在项目目录下执行
+            "cwd": "${workspaceRoot}",
+            // 4. 打开inspector模式
+            "protocol": "inspector"
+        }
+    ]
+}
