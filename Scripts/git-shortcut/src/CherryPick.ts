@@ -37,32 +37,30 @@ export class CherryPickerHelper {
     }
 
     run() {
-        this.pickNextCommit().then(str => {
+        let tasks = this.commits.map(commit => {
+            return new Promise((resolve, reject) => {
+                this.git.cherryPick(commit.commitId).then(result => {
+                    this.commits = this.commits.filter(val => val.commitId != commit.commitId)
+                    resolve(`cherry-pick ${commit.commitId} ${commit.message}`)
+                }).catch(err => {
+                    this.commits = this.commits.filter(val => val.commitId != commit.commitId)
+                    reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
+                })
+            })
+        }).reverse()
+
+        Promise.all(tasks).then(results => {
             this.saveResultToLocal()
-            console.log(str)
+            console.log(results)
+            console.log('cherry-pick finish')
         }).catch(err => {
             this.saveResultToLocal()
             console.log(err)
         })
     }
 
-    pickNextCommit(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            if (this.index >= 0) {
-                let commit = this.commits[this.index--]
-                this.git.cherryPick(commit.commitId).then(out => {
-                    return this.pickNextCommit()
-                }).catch(err => {
-                    reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
-                })
-            } else {
-                resolve('cherry-pick finish')
-            }
-        })
-    }
-
     saveResultToLocal() {
-        let content = this.commits.slice(0, this.index + 1).map(commit => {
+        let content = this.commits.map(commit => {
             return `${commit.commitId} ${commit.message}`
         }).join('\n')
         
