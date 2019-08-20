@@ -37,3 +37,14 @@ program
     })
 
 program.parse(process.argv)
+
+function test(index: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+        console.log(`run ${index}`)
+        if (index == 5) {
+            reject(index)
+        } else {
+            resolve(index)
+        }
+    })
+}

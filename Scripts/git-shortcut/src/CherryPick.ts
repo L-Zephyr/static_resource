@@ -10,7 +10,7 @@ interface Commit {
 export class CherryPickerHelper {
     private commitsFile: string = ""
     private commits: Commit[] = []
-    private index: number = 0
+    private end: number = 0
     private git: Git = new Git()
 
     /**
@@ -33,34 +33,42 @@ export class CherryPickerHelper {
             }
             return result
         }, [])
-        this.index = this.commits.length - 1
+        this.end = this.commits.length
+        this.commits.reverse()
     }
 
     run() {
-        let tasks = this.commits.map(commit => {
-            return new Promise((resolve, reject) => {
-                this.git.cherryPick(commit.commitId).then(result => {
-                    this.commits = this.commits.filter(val => val.commitId != commit.commitId)
-                    resolve(`cherry-pick ${commit.commitId} ${commit.message}`)
-                }).catch(err => {
-                    this.commits = this.commits.filter(val => val.commitId != commit.commitId)
-                    reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
-                })
-            })
-        }).reverse()
+        if (this.commits.length == 0) {
+            return;
+        }
+        (async () => {
+            try {
+                for (let commit of this.commits) {
+                    this.end--
+                    let result = await this.cherryPickCommit(commit)
+                    console.log(result)
+                }
+                console.log('cherry-pick finish')
+                this.saveResultToLocal()
+            } catch (e) {
+                console.log(e)
+                this.saveResultToLocal()
+            }
+        })()
+    }
 
-        Promise.all(tasks).then(results => {
-            this.saveResultToLocal()
-            console.log(results)
-            console.log('cherry-pick finish')
-        }).catch(err => {
-            this.saveResultToLocal()
-            console.log(err)
+    cherryPickCommit(commit: Commit): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.git.cherryPick(commit.commitId).then(result => {
+                resolve(`cherry-pick ${commit.commitId} ${commit.message}`)
+            }).catch(err => {
+                reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
+            })
         })
     }
 
     saveResultToLocal() {
-        let content = this.commits.map(commit => {
+        let content = this.commits.reverse().slice(0, this.end).map(commit => {
             return `${commit.commitId} ${commit.message}`
         }).join('\n')
         
