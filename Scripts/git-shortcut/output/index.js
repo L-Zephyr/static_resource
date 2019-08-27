@@ -44,17 +44,4 @@ function test(index) {
         }
     });
 }
-// function method() {
-//     (async () => {
-//         try {
-//             for (let i = 0; i < 10; ++i) {
-//                 let ret = await test(i)
-//                 console.log(ret)
-//             }
-//         } catch (e) {
-//             console.log('fail ' + e)
-//         }
-//     })()
-// }
-// method()
 //# sourceMappingURL=index.js.map

@@ -62,7 +62,12 @@ export class CherryPickerHelper {
             this.git.cherryPick(commit.commitId).then(result => {
                 resolve(`cherry-pick ${commit.commitId} ${commit.message}`)
             }).catch(err => {
-                reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
+                let errMsg = `${err}`
+                if (errMsg.search('hint: after resolving the conflicts') != -1) {
+                    reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
+                } else {
+                    resolve(`cherry-pick ${commit.commitId} ${commit.message}`)
+                }
             })
         })
     }
