@@ -1,4 +1,4 @@
-import { runCommand } from "./Utils";
+import { runCommand } from "./Base";
 
 export class UnmergeCommit {
     private targetBranch: string

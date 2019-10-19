@@ -1,1 +1,1 @@
-{"version":3,"file":"LastWeekCommits.js","sourceRoot":"","sources":["../src/LastWeekCommits.ts"],"names":[],"mappings":";;AACA,MAAa,eAAe;IAGxB,YAAY,MAAc;QACtB,IAAI,CAAC,MAAM,GAAG,MAAM,CAAA;IACxB,CAAC;IAED,GAAG;IAEH,CAAC;CACJ;AAVD,0CAUC"}
+{"version":3,"file":"LastWeekCommits.js","sourceRoot":"","sources":["../src/LastWeekCommits.ts"],"names":[],"mappings":";;AAAA,iCAAqC;AAErC,MAAa,eAAgB,SAAQ,kBAAW;IAG5C,YAAY,MAAc;QACtB,KAAK,EAAE,CAAA;QACP,IAAI,CAAC,MAAM,GAAG,MAAM,CAAA;IACxB,CAAC;IAED,GAAG;IAEH,CAAC;CACJ;AAXD,0CAWC"}

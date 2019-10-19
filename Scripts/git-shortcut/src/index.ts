@@ -4,6 +4,7 @@ import * as program from "commander";
 import { UnmergeCommit } from "./UnmergeCommit";
 import { LastWeekCommits } from "./LastWeekCommits";
 import { CherryPickerHelper } from "./CherryPick";
+import { CommitsCompare } from "./CommitsCompare";
 
 program
     .command('unmerges <targetBranch>')
@@ -23,9 +24,18 @@ program
 
 program
     .command('cherry-pick <commitFile>')
+    .option('--nocommit')
     .description('print all commits made last week for specify author')
-    .action((commitFile) => {
-        let command = new CherryPickerHelper(commitFile)
+    .action((commitFile, cmdObj) => {
+        let command = new CherryPickerHelper(commitFile, cmdObj.nocommit ? true : false)
+        command.run()
+    })
+
+program
+    .command('compare-commits <commitsFile1> <commitsFile2>')
+    .description("input two files that contains commits with '--one-line' format, compare the differences between two commits")
+    .action((commitsFile1, commitsFile2) => {
+        let command = new CommitsCompare(commitsFile1, commitsFile2)
         command.run()
     })
 
@@ -37,14 +47,3 @@ program
     })
 
 program.parse(process.argv)
-
-function test(index: number): Promise<number> {
-    return new Promise((resolve, reject) => {
-        console.log(`run ${index}`)
-        if (index == 5) {
-            reject(index)
-        } else {
-            resolve(index)
-        }
-    })
-}

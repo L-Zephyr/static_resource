@@ -1,40 +1,20 @@
-import { Git } from "./utils";
+import { Git, BaseCommand, Commit, readCommitsFromFile } from "./Base";
 import * as fs from "fs";
-import * as path from "path"
 
-interface Commit {
-    commitId: string
-    message: string
-}
-
-export class CherryPickerHelper {
+export class CherryPickerHelper extends BaseCommand {
     private commitsFile: string = ""
     private commits: Commit[] = []
     private end: number = 0
-    private git: Git = new Git()
+    private noCommit: boolean = false
 
     /**
      * @param commitsFile 包含所有commit的文件，--oneline格式
      */
-    constructor(commitsFile: string) {
+    constructor(commitsFile: string, noCommit: boolean = false) {
+        super()
         this.commitsFile = commitsFile
-        let content = fs.readFileSync(path.resolve(commitsFile), { encoding: 'utf-8' })
-        if (!content) {
-            console.log(`read ${commitsFile} fail`)
-            return
-        }
-        this.commits = content.split('\n').reduce((result, line) => { // filter commit
-            let match = line.match(/(\w+) (.*)/)
-            if (match) {
-                result.push({
-                    commitId: match[1],
-                    message: match[2]
-                }) 
-            }
-            return result
-        }, [])
-        this.end = this.commits.length
-        this.commits.reverse()
+        this.commits = readCommitsFromFile(commitsFile)
+        this.noCommit = noCommit
     }
 
     run() {
@@ -59,11 +39,11 @@ export class CherryPickerHelper {
 
     cherryPickCommit(commit: Commit): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.git.cherryPick(commit.commitId).then(result => {
+            this.git.cherryPick(commit.commitId, this.noCommit ? ['--no-commit'] : []).then(result => {
                 resolve(`cherry-pick ${commit.commitId} ${commit.message}`)
             }).catch(err => {
                 let errMsg = `${err}`
-                if (errMsg.search('hint: after resolving the conflicts') != -1) {
+                if (errMsg.search('hint: ') != -1) {
                     reject(`cherry-pick fail at commit: ${commit.commitId} ${commit.message}\nplease resolve confict and commit manually, then run again`)
                 } else {
                     resolve(`cherry-pick ${commit.commitId} ${commit.message}`)

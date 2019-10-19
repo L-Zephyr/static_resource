@@ -5,6 +5,7 @@ const program = require("commander");
 const UnmergeCommit_1 = require("./UnmergeCommit");
 const LastWeekCommits_1 = require("./LastWeekCommits");
 const CherryPick_1 = require("./CherryPick");
+const CommitsCompare_1 = require("./CommitsCompare");
 program
     .command('unmerges <targetBranch>')
     .description('print all commits not merge to targetBranch')
@@ -21,9 +22,17 @@ program
 });
 program
     .command('cherry-pick <commitFile>')
+    .option('--nocommit')
     .description('print all commits made last week for specify author')
-    .action((commitFile) => {
-    let command = new CherryPick_1.CherryPickerHelper(commitFile);
+    .action((commitFile, cmdObj) => {
+    let command = new CherryPick_1.CherryPickerHelper(commitFile, cmdObj.nocommit ? true : false);
+    command.run();
+});
+program
+    .command('compare-commits <commitsFile1> <commitsFile2>')
+    .description("input two files that contains commits with '--one-line' format, compare the differences between two commits")
+    .action((commitsFile1, commitsFile2) => {
+    let command = new CommitsCompare_1.CommitsCompare(commitsFile1, commitsFile2);
     command.run();
 });
 program
@@ -33,15 +42,4 @@ program
     program.help();
 });
 program.parse(process.argv);
-function test(index) {
-    return new Promise((resolve, reject) => {
-        console.log(`run ${index}`);
-        if (index == 5) {
-            reject(index);
-        }
-        else {
-            resolve(index);
-        }
-    });
-}
 //# sourceMappingURL=index.js.map
