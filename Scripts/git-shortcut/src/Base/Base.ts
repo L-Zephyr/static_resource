@@ -59,6 +59,9 @@ export class Git {
         return runCommand(`git cherry-pick ${commitId} ${args.join(' ')}`, this.cwd)
     }
 
+    /**
+     * specify commit id and file name, show change lines
+     */
     show(commitId: string, file: string = "", args: string[] = []): Promise<string> {
         return runCommand(`git show ${commitId} ${args.join(' ')} -- ${file}`, this.cwd)
     }
@@ -75,6 +78,37 @@ export class Git {
             return lines.slice(1) // remove first
         })
     }
+
+    /**
+     * 查看指定文件某一行的最后修改人
+     */
+    blame(file: string, line: number): Promise<string> {
+        return runCommand(`git blame -L ${line},${line} ${file}`, this.cwd).then(info => {
+            let match = info.match(/^.* \((.*?) .*\)/)
+            if (match && match[1]) {
+                return match[1]
+            }
+            return ""
+        }).catch(err => {
+            return ""
+        })
+    }
+
+    /**
+     * blamed的同步版本
+     */
+    blameSync(file: string, line: number): string {
+        try {
+            let output = execSync(`git blame -L ${line},${line} ${file}`, { cwd: this.cwd, encoding: 'utf8' })
+            let match = output.match(/^.* \((.*?) .*\)/)
+            if (match && match[1]) {
+                return match[1]
+            }
+        } catch {
+            return ""
+        }
+        return ""
+    }
 }
 
 export class BaseCommand {
@@ -83,4 +117,29 @@ export class BaseCommand {
     run() {
 
     }
+}
+
+/**
+ * 递归读取一个目录下的所有文件，返回文件路径组成的数组，同步方法
+ */
+export function readDirRecursiveSync(dirpath: string): string[] {
+    let resultPaths: string[] = []
+    let dirpathStack: string[] = [dirpath]
+    
+    while (dirpathStack.length > 0) {
+        let pathToDir = dirpathStack.pop()
+        for (let file of fs.readdirSync(pathToDir)) {
+            let fullpath = path.resolve(pathToDir, file)
+            if (!fs.existsSync(fullpath)) {
+                continue
+            }
+            if (fs.statSync(fullpath).isDirectory()) {
+                dirpathStack.push(fullpath)
+            } else {
+                resultPaths.push(fullpath)
+            }
+        }
+    }
+
+    return resultPaths
 }

@@ -1,4 +1,4 @@
-import { Git, BaseCommand, Commit, readCommitsFromFile } from "./Base";
+import { Git, BaseCommand, Commit, readCommitsFromFile } from "./Base/Base";
 import * as fs from "fs";
 
 export class CherryPickerHelper extends BaseCommand {

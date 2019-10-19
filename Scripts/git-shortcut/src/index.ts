@@ -5,6 +5,7 @@ import { UnmergeCommit } from "./UnmergeCommit";
 import { LastWeekCommits } from "./LastWeekCommits";
 import { CherryPickerHelper } from "./CherryPick";
 import { CommitsCompare } from "./CommitsCompare";
+import { MyTodo } from "./MyTodo";
 
 program
     .command('unmerges <targetBranch>')
@@ -36,6 +37,14 @@ program
     .description("input two files that contains commits with '--one-line' format, compare the differences between two commits")
     .action((commitsFile1, commitsFile2) => {
         let command = new CommitsCompare(commitsFile1, commitsFile2)
+        command.run()
+    })
+
+program
+    .command('my-todo <author>')
+    .description('find `TODO:` in project that belongs to <author>')
+    .action((author) => {
+        let command = new MyTodo(author)
         command.run()
     })
 

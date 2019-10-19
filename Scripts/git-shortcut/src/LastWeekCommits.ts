@@ -1,4 +1,4 @@
-import { BaseCommand } from "./Base";
+import { BaseCommand } from "./Base/Base";
 
 export class LastWeekCommits extends BaseCommand {
     private author: string

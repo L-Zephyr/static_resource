@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Base_1 = require("./Base");
+const Base_1 = require("./Base/Base");
 const fs = require("fs");
 class CherryPickerHelper extends Base_1.BaseCommand {
     /**

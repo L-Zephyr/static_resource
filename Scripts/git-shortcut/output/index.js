@@ -6,6 +6,7 @@ const UnmergeCommit_1 = require("./UnmergeCommit");
 const LastWeekCommits_1 = require("./LastWeekCommits");
 const CherryPick_1 = require("./CherryPick");
 const CommitsCompare_1 = require("./CommitsCompare");
+const MyTodo_1 = require("./MyTodo");
 program
     .command('unmerges <targetBranch>')
     .description('print all commits not merge to targetBranch')
@@ -33,6 +34,13 @@ program
     .description("input two files that contains commits with '--one-line' format, compare the differences between two commits")
     .action((commitsFile1, commitsFile2) => {
     let command = new CommitsCompare_1.CommitsCompare(commitsFile1, commitsFile2);
+    command.run();
+});
+program
+    .command('my-todo <author>')
+    .description('find `TODO:` in project that belongs to <author>')
+    .action((author) => {
+    let command = new MyTodo_1.MyTodo(author);
     command.run();
 });
 program

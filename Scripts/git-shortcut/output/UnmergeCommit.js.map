@@ -1,1 +1,1 @@
-{"version":3,"file":"UnmergeCommit.js","sourceRoot":"","sources":["../src/UnmergeCommit.ts"],"names":[],"mappings":";;AAAA,iCAAoC;AAEpC,MAAa,aAAa;IAGtB,YAAY,YAAoB;QAC5B,IAAI,CAAC,YAAY,GAAG,YAAY,CAAA;IACpC,CAAC;IAED,GAAG;QACC,iBAAU,CAAC,SAAS,CAAC,CAAA;IACzB,CAAC;CACJ;AAVD,sCAUC"}
+{"version":3,"file":"UnmergeCommit.js","sourceRoot":"","sources":["../src/UnmergeCommit.ts"],"names":[],"mappings":";;AAAA,sCAAyC;AAEzC,MAAa,aAAa;IAGtB,YAAY,YAAoB;QAC5B,IAAI,CAAC,YAAY,GAAG,YAAY,CAAA;IACpC,CAAC;IAED,GAAG;QACC,iBAAU,CAAC,SAAS,CAAC,CAAA;IACzB,CAAC;CACJ;AAVD,sCAUC"}

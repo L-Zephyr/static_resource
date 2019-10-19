@@ -1,4 +1,4 @@
-import { BaseCommand, Commit, readCommitsFromFile } from "./Base";
+import { BaseCommand, Commit, readCommitsFromFile } from "./Base/Base";
 
 export class CommitsCompare extends BaseCommand {
     private commitsFile1: string
