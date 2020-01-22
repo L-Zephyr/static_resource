@@ -53,6 +53,13 @@ export class Git {
     }
 
     /**
+     * run command at current cwd
+     */
+    run(command: string): Promise<string> {
+        return runCommand(command, this.cwd)
+    }
+
+    /**
      * cherry pick a commit
      */
     cherryPick(commitId: string, args: string[] = []): Promise<string> {
@@ -108,6 +115,41 @@ export class Git {
             return ""
         }
         return ""
+    }
+
+    /**
+     * return latest commit md5 for sepecify branch
+     * @param branch target branch name
+     * @param file sepecify file to log 
+     * @param author commit author
+     * @param grep grep commit message
+     * @param limit max commits
+     */
+    logCommits(branch: string = "", file: string = "", author: string = "", grep: string[] = [], limit: number = 0): Promise<Commit[]> {
+        let fileFlag = file.length > 0 ? `-- ${file}` : ""
+        let limitFlag = limit > 0 ? `-${limit}` : ""
+        let authorFlag = author.length > 0 ? `--author=${author}` : ""
+        let grepFlag = grep.map(key => `--grep="${key}"`).join(" ")
+
+        return this.run(`git log ${branch} --oneline ${limitFlag} ${authorFlag} ${grepFlag} ${fileFlag}`).then(results => {
+            // let reg = new RegExp("^([a-z0-9]*) (\(.*\) )?(.*)$")
+            return results.split('\n').filter(line => {
+                return line.length > 0
+            }).map(line => {
+                let parts = line.split(' ')
+                if (parts.length == 0) {
+                    return null
+                }
+                let name = parts[0]
+                parts.splice(0, 1)
+                return {
+                    commitId: name,
+                    message: parts.join(' ')
+                }
+            }).filter(ret => {
+                return ret != null
+            })
+        })
     }
 }
 

@@ -12,8 +12,7 @@
             "program": "${workspaceRoot}/node_modules/.bin/ts-node",
             "args": [
                 "./src/index.ts", // 2. 这个是需要调试的ts代码文件
-                "my-todo",
-                "zephyr"
+                "unmerge",
             ],
             // 3. 在项目目录下执行
             "cwd": "${workspaceRoot}",

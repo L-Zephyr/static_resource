@@ -8,10 +8,11 @@ import { CommitsCompare } from "./CommitsCompare";
 import { MyTodo } from "./MyTodo";
 
 program
-    .command('unmerges <targetBranch>')
+    .command('unmerge')
+    .option('--grep <type>', 'filter option')
     .description('print all commits not merge to targetBranch')
-    .action((targetBranch) => {
-        let command = new UnmergeCommit(targetBranch)
+    .action((option) => {
+        let command = new UnmergeCommit("br_trunk", option.grep)
         command.run()
     })
 
@@ -40,12 +41,24 @@ program
         command.run()
     })
 
+// 在工程中找到指定作者的"TODO:"
 program
     .command('my-todo <author>')
     .description('find `TODO:` in project that belongs to <author>')
     .action((author) => {
         let command = new MyTodo(author)
         command.run()
+    })
+
+// 从commit历史中的所有修改记录中匹配regex，输出产生这个修改的commit和author
+program
+    .command('search <regex>')
+    .option('-b, --branch <type>', '在指定的分支中查找，默认为当前分支')
+    .option('--limit', "最多匹配指定数量的提交，默认无限制")
+    .option('--file', "在指定文件的修改中查找，默认为所有文件")
+    .description('find which commit make changes that match the regex')
+    .action((regex, cmdObj) => {
+        console.log(regex + " " + cmdObj.branch)
     })
 
 program
