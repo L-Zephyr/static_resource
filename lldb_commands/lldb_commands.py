@@ -14,10 +14,11 @@ def traceclass_action(frame, location, dict):
   print(frame.GetFunctionName())
   frame.GetThread().GetProcess().Continue()
 
+# print all method call at specify class
 def traceclass(debugger, command, result, internal_dict):
+  print(command)
   if not command:
-    print("Error: class not specify")
-    return
+    print("trace all class")
 
   res = lldb.SBCommandReturnObject()
 
@@ -26,14 +27,17 @@ def traceclass(debugger, command, result, internal_dict):
   origBrList = res.GetOutput()
 
   # set breakpoint
-  args = command.split(' ')
-  print(args)
+  args = command.split(',')
+  if len(args) > 0:
+    print("trace class: %s"%args)
+  
   if len(args) == 0:
-    return
+    debugger.GetCommandInterpreter().HandleCommand("br set -r \[.* .*\]", res)
   elif len(args) == 1:
     debugger.GetCommandInterpreter().HandleCommand("br set -r \[" + command + " .*\]", res)
   else:
-    debugger.GetCommandInterpreter().HandleCommand("br set -r \[" + command + " .*\] " + "-c '$arg1==" + args[1] + "'", res)
+    class_name = "|".join(args)
+    debugger.GetCommandInterpreter().HandleCommand("br set -r \[(" + class_name + ") .*\] ", res)
 
   # get the breakpoint list
   debugger.GetCommandInterpreter().HandleCommand("br list", res) 
